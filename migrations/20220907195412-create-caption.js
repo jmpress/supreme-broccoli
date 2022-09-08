@@ -8,13 +8,28 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      captionerEmail: {
+      captionContent: {
         type: Sequelize.STRING
       },
-      caption: {
-        type: Sequelize.STRING
+      imageID: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Images',
+          key: 'id',
+          //deferrable: Sequelize.Deferrable.INITIALLY_DEFERRED
+        },
+        onDelete: 'CASCADE'
       },
-      captionRating: {
+      captionerID: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Users',
+          key: 'id',
+          //deferrable: Sequelize.Deferrable.INITIALLY_DEFERRED
+        },
+        onDelete: 'CASCADE'
+      },
+      rating: {
         type: Sequelize.INTEGER
       },
       createdAt: {

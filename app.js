@@ -11,13 +11,15 @@ const LocalStrategy = require('passport-local').Strategy;
 const cors = require('cors');
 const morgan = require('morgan');
 const { engine } = require('express-handlebars');
+const dotenv = require('dotenv').config();
 const path = require('path');
 
 //include Models
 //const {Garment, myGarmentArray } = require('./models/garmentModel')
 
 //controllers
-//const garmentsRouter = require('./controllers/garmentController');
+const imageRouter = require('./controllers/imageController');
+const authRouter = require('./controllers/authController');
 
 //database handlder
 const db = require('./models/index')
@@ -49,28 +51,50 @@ app.use(helmet());
 // middleware for logging
 app.use(morgan('dev'));
 
-app.get('/', (req, res) => {
-  //if user is logged in:
-  res.render('newUser');
-  //else
-  //res.render('myCloset');
+// set up session
+app.use(session({
+    name: 'supreme-broccoli',
+    secret: process.env.SESSION_SECRET,  
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 1000*60*60, secure: false, sameSite: 'none' },
+    secure: false,  //when in production, make it true.
+    store
+  })
+)
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
 });
 
-//app.use('/garment', garmentsRouter)
+passport.deserializeUser((id, done) => {
+  //find user by id
+    if (err) {
+      return done(err);
+    }
+    done(null, user);
+  
+});
+
+passport.use(
+  new LocalStrategy(function (username, password, cb) {
+    // user model function to authenticate user by using username and password and querying database
+  })
+);
+
+app.get('/', (req, res) => {
+  //if user is logged in:
+  res.render('home');
+  //else
+  //res.render('mainInterface');
+});
+
+app.use('/image', imageRouter);
+app.use('/auth', authRouter);
 
 // Add your code to start the server listening at PORT below:   
 app.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`);
   });
-
-/*  
-async function createTables(){
-  try {
-    await db.authenticate();
-    console.log('Connection has been established successfully.');
-  } catch (error) {
-    console.error('Unable to connect to the database:', error);
-  }
-  return await db.sync();  
-}
-*/

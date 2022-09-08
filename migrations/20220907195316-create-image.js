@@ -8,14 +8,32 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      uploaderEmail: {
-        type: Sequelize.STRING
-      },
-      filename: {
-        type: Sequelize.STRING
+      fileName: {
+        type: Sequelize.STRING,
+        validate: {
+          is: /^[\w\-\.]$/
+        }
       },
       imageURL: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        validate: {
+          isURL: true
+        }
+      },
+      rating: {
+        type: Sequelize.INTEGER,
+        validate: {
+          isInt: true,
+          max: 5,
+          min: 1
+        }
+      },
+      uploaderID: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Users',
+          key: 'id',
+        },
       },
       createdAt: {
         allowNull: false,

@@ -14,9 +14,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Caption.init({
-    captionerEmail: DataTypes.STRING,
-    caption: DataTypes.STRING,
-    captionRating: DataTypes.INTEGER
+    captionContent: DataTypes.STRING,
+    imageID: DataTypes.INTEGER,
+    captionerID: DataTypes.INTEGER,
+    rating: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Caption',

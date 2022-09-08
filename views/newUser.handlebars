@@ -1,19 +1,21 @@
 <h2>Please fill out the fields below to register.</h2>
     <div id="inputFieldArea">
-        <form>
+        <form action="/auth/register" method="POST">
+            <label for="firstName">First Name:</label>
+            <input name="firstName" id="firstName" type = "text" required><br>
+
+            <label for="lastName">Last Name:</label>
+            <input name="lastName" id="lastName" type = "text" required><br>
+
             <label for="userEmail">E-mail address:</label>
-            <input id="userEmail" type = "text" required><br>
+            <input name="userEmail" id="userEmail" type = "text" required><br>
 
             <label for="userPassA">Password:</label>
-            <input id="userPassA" type = "password" required><br>
+            <input name="userPassA" id="userPassA" type = "password" required><br>
 
             <label for="userPassB">Password (confirm):</label>
-            <input id="userPassB" type = "password" required><br>
+            <input name="userPassB" id="userPassB" type = "password" required><br>
             <br>
+            <INPUT type="submit" value="Send"> <INPUT type="reset">
         </form>
-    </div>
-    <div id="buttonArea">
-        <button id = "register">Register!</button>
-        <button id = "cancelNew">Cancel</button>
-
     </div>

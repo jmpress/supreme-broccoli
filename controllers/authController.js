@@ -12,28 +12,48 @@ const express = require('express');
 const db = require('../models/index');
 const Router = require('express-promise-router');
 const authRouter = new Router();
+const { makeSaltedHash, comparePasswords } = require('../utils/utils');
+const passport = require('passport');
 
-authRouter.post('/login', (req, res, next) => {
-
-    res.status(200).send();
-});
+authRouter.route('/login')
+    .get((req, res, next) => {
+        res.render('login');
+    })
+    .post(passport.authenticate('local', { 
+        successRedirect: '/image/all', 
+        failureRedirect: '/auth/login' 
+    }));
 
 authRouter.get('/logout', (req, res, next) => {
     req.logout();
-    res.redirect('/');
+    res.redirect('/auth/login');
 });
 
-authRouter.get('/register', (req, res, next) => {
-    res.render('newUser');
-});
-
-authRouter.post('/register', (req, res, next) => {
-    const { firstName, lastName, userEmail, userPassA, userPassB} = req.body;
+authRouter.route('/register')
+    .get((req, res, next) => {
+        res.render('newUser');
+    })
+    .post(async (req, res, next) => {
+    const { firstName, lastName, userEmail, userPassA, userPassB } = req.body;
     //check passA and passB are equal 
+    if(userPassA !== userPassB){res.redirect('/auth/register');}
     //Salt and hash the pass
     //save new user to database.
+    const newUser = {
+        firstName, 
+        lastName,
+        email,
+        token: '',
+        password: userPassA
+    }
+    const regUser = await User.create(newUser);
+    console.log("auto-generated ID:", regUser.id);
     //redirect to auth/login
-    res.status(200).send();
+    res.redirect('/auth/login');
 });
+
+authRouter.get('/profile', (res, req, next) => {
+    res.render('profile', {user: req.user});
+})
 
 module.exports = authRouter;

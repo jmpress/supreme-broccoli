@@ -69,24 +69,87 @@ passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 
-passport.deserializeUser((id, done) => {
-  //find user by id
-    if (err) {
-      return done(err);
+passport.deserializeUser(async (id, done) => {
+  const loggedInUser = await db.User.findOne({
+    where: {
+      id: id
     }
-    done(null, user);
+  });
+    if (!loggedInUser) {
+      return done(new Error('failed to deserialize'));
+    }
+    done(null, loggedInUser.dataValues);
   
 });
 
 passport.use(
-  new LocalStrategy(function (username, password, cb) {
+  new LocalStrategy(async function (username, password, done) {
+    const result = await db.User.findOne({where: {email: username}})
+    /*.then(function(err, user) {
+      console.log(user);
+      if (err) { return done(err); }
+    */
+    if(!result){return done(new Error('no result in db'));}
+    const user = result.dataValues;
+      if (!user) {
+          console.log('Incorrect username.');
+          return done(null, false, { message: 'Incorrect username.' });
+      } else if (password != user.password) {
+          console.log('Incorrect password');
+          return done(null, false, { message: 'Incorrect password.' });
+      } else {
+          console.log('ok');
+          done(null, user);
+      }
+    })
+  ); 
+    
+    
+    /*console.log('inside LocalStrategy');
     // user model function to authenticate user by using username and password and querying database
-  })
-);
+    const check = await db.User.findAll({
+      where: {
+        email: username
+      }
+    }); 
+    if (!check) {
+      return cb(new Error('User does not exist'));
+    }
+    console.log(check);
+    const checkEmail = check[0].dataValues.email;
+    const checkPass = check[0].dataValues.password;
+    console.log(checkEmail + ' ' + checkPass);
+    
+    if (!checkEmail) {
+      return cb(null, false);
+    }
+    if (checkPass != password) {
+      return cb(null, false);
+    }
+    return cb(null, user);
 
-app.get('/', (req, res) => {
-  //if user is logged in:
-  res.render('home');
+  })
+/*
+  const {userEmail, passWord} = req.body;
+
+    const saltedPass = passWord; //makeSaltedHash(passWord);
+
+    const result = await db.User.findAll({
+        where: {
+            email: userEmail
+        }
+    });
+
+    const targetUser = result[0].dataValues;
+    const dbPass = targetUser.password;   
+
+    const userMatch = (saltedPass === dbPass); //await comparePasswords(saltedPass, dbPass)
+    console.log(userMatch);
+*/
+
+app.get('/', (req, res, next) => {
+  //if user is not logged in:
+  res.redirect('/auth/login');
   //else
   //res.render('mainInterface');
 });

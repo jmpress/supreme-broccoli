@@ -13,8 +13,9 @@ const Router = require('express-promise-router');
 const imageRouter = new Router();
 
 imageRouter.get('/all', async (req, res, next) => {
-    const images = await db.Image.findAll();
-    res.status(200).send(images);
+    res.render('imageBrowser');
+    //const images = await db.Image.findAll();
+    //res.status(200).send(images);
 });
 
 imageRouter.get('/:id', async (req, res, next) => {

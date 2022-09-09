@@ -14,7 +14,7 @@
             <input name="newCap" id="newCap" type = "text" required>
 
             <!--hidden values: -->
-            <input name="userID" id="userID" type = "text" hidden>
+            <input name="userID" id="userID" type = "text" value="{{user.id}}" hidden>
             <input name="imageID" id="imageID" type = "text" value="{{image.id}}" hidden>
 
             <br>
@@ -22,4 +22,9 @@
         </form>
 </div>
 <br>
-<a href="/image/all">Back to image browser.</a>
+<a href="/image/all">Back to image browser.</a><br>
+<div id="logout">
+        <form action="/auth/logout" method="POST">
+            <INPUT type="submit" value="Logout">
+        </form>
+</div>

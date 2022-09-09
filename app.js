@@ -18,7 +18,7 @@ const path = require('path');
 const imageRouter = require('./controllers/imageController');
 const authRouter = require('./controllers/authController');
 
-//database handlder
+//database handler
 const db = require('./models/index')
 
 
@@ -63,8 +63,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.serializeUser((user, done) => {
-  console.log('inside Serialize; user:' + user)
-  console.log('ID:' + user.id);
   done(null, user.id);
 });
 
@@ -77,7 +75,6 @@ passport.deserializeUser(async (id, done) => {
     if (!loggedInUser.dataValues) {
       return done(new Error('failed to deserialize'));
     }
-    console.log(loggedInUser.dataValues);
     done(null, loggedInUser.dataValues);
   
 });
@@ -104,49 +101,6 @@ passport.use(
     })
   ); 
     
-    
-    /*console.log('inside LocalStrategy');
-    // user model function to authenticate user by using username and password and querying database
-    const check = await db.User.findAll({
-      where: {
-        email: username
-      }
-    }); 
-    if (!check) {
-      return cb(new Error('User does not exist'));
-    }
-    console.log(check);
-    const checkEmail = check[0].dataValues.email;
-    const checkPass = check[0].dataValues.password;
-    console.log(checkEmail + ' ' + checkPass);
-    
-    if (!checkEmail) {
-      return cb(null, false);
-    }
-    if (checkPass != password) {
-      return cb(null, false);
-    }
-    return cb(null, user);
-
-  })
-/*
-  const {userEmail, passWord} = req.body;
-
-    const saltedPass = passWord; //makeSaltedHash(passWord);
-
-    const result = await db.User.findAll({
-        where: {
-            email: userEmail
-        }
-    });
-
-    const targetUser = result[0].dataValues;
-    const dbPass = targetUser.password;   
-
-    const userMatch = (saltedPass === dbPass); //await comparePasswords(saltedPass, dbPass)
-    console.log(userMatch);
-*/
-
 app.get('/', (req, res, next) => {
   //if user is not logged in:
   res.redirect('/auth/login');

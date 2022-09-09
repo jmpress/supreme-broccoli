@@ -14,7 +14,7 @@ const imageRouter = new Router();
 
 imageRouter.get('/all', async (req, res, next) => {
     const images = await db.Image.findAll();
-    res.render('imageBrowser', {image: images});
+    res.render('imageBrowser', {image: images, user:req.user});
     //res.status(200).send(images);
 });
 
@@ -32,14 +32,20 @@ imageRouter.get('/:id', async (req, res, next) => {
             imageID: targetIndex
         }
     })
-    console.log(target[0]);
-    console.log(caps);
-    res.render('imageDetail', {image: target[0].dataValues, caption: caps});
+    
+    res.render('imageDetail', {image: target[0].dataValues, caption: caps, user:req.user});
 });
 
-imageRouter.put('/caption/new', (req, res, next) => {
-    
-    res.status(200).send();
+imageRouter.post('/caption/new', async (req, res, next) => {
+    const { newCap, userID, imageID } = req.body;
+    const userCaption = {
+        captionContent: newCap,
+        imageID,
+        captionerID: userID,
+        rating: 0
+    }
+    const newCaption = await db.Caption.create(userCaption);
+    res.redirect(`/image/${imageID}`)
 });
 
 imageRouter.put('/caption/rate/:id', (req, res, next) => {

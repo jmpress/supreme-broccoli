@@ -14,16 +14,16 @@ const { engine } = require('express-handlebars');
 const dotenv = require('dotenv').config();
 const path = require('path');
 
-//include Models
-//const {Garment, myGarmentArray } = require('./models/garmentModel')
-
 //controllers
 const imageRouter = require('./controllers/imageController');
 const authRouter = require('./controllers/authController');
 
 //database handlder
 const db = require('./models/index')
-//createTables();
+
+
+// set paths for static content
+app.use('/public', express.static(path.join(__dirname, "public")));
 
 //view engine setup
 app.engine('handlebars', engine());
@@ -31,9 +31,6 @@ app.set('views', './views');
 app.set('view engine', 'handlebars');
 
 //middleware Routers
-
-// set paths for static content
-app.use('/public', express.static(path.join(__dirname, "public")));
 
 
 // Set localHost port to listen at
@@ -66,6 +63,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.serializeUser((user, done) => {
+  console.log('inside Serialize; user:' + user)
+  console.log('ID:' + user.id);
   done(null, user.id);
 });
 
@@ -75,9 +74,10 @@ passport.deserializeUser(async (id, done) => {
       id: id
     }
   });
-    if (!loggedInUser) {
+    if (!loggedInUser.dataValues) {
       return done(new Error('failed to deserialize'));
     }
+    console.log(loggedInUser.dataValues);
     done(null, loggedInUser.dataValues);
   
 });

@@ -13,8 +13,8 @@ const Router = require('express-promise-router');
 const imageRouter = new Router();
 
 imageRouter.get('/all', async (req, res, next) => {
-    res.render('imageBrowser');
-    //const images = await db.Image.findAll();
+    const images = await db.Image.findAll();
+    res.render('imageBrowser', {image: images});
     //res.status(200).send(images);
 });
 
@@ -27,7 +27,14 @@ imageRouter.get('/:id', async (req, res, next) => {
             id: targetIndex
         }
     });
-    res.status(200).send(target);
+    const caps = await db.Caption.findAll({
+        where: {
+            imageID: targetIndex
+        }
+    })
+    console.log(target[0]);
+    console.log(caps);
+    res.render('imageDetail', {image: target[0].dataValues, caption: caps});
 });
 
 imageRouter.put('/caption/new', (req, res, next) => {

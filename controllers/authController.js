@@ -42,11 +42,11 @@ authRouter.route('/register')
     const newUser = {
         firstName, 
         lastName,
-        email,
+        email: userEmail,
         token: '',
         password: userPassA
     }
-    const regUser = await User.create(newUser);
+    const regUser = await db.User.create(newUser);
     console.log("auto-generated ID:", regUser.id);
     //redirect to auth/login
     res.redirect('/auth/login');

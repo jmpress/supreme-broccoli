@@ -1,1 +1,25 @@
 <h1> This page shows a single pic with all comments</h1>
+<p><img src="{{image.imageURL}}"></p> 
+{{#if caption}}
+    {{#each caption}}
+        <p>{{this.dataValues.captionContent}}</p>
+    {{/each}}
+{{else}}
+    <p>No captions for this image yet! Submit one below!</p>
+{{/if}}
+
+<div id="inputFieldArea">
+        <form action="/image/caption/new" method="POST">
+            <label for="newCap">Your Caption:</label>
+            <input name="newCap" id="newCap" type = "text" required>
+
+            <!--hidden values: -->
+            <input name="userID" id="userID" type = "text" hidden>
+            <input name="imageID" id="imageID" type = "text" value="{{image.id}}" hidden>
+
+            <br>
+            <INPUT type="submit" value="Submit"> <INPUT type="reset">
+        </form>
+</div>
+<br>
+<a href="/image/all">Back to image browser.</a>

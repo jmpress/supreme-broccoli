@@ -1,1 +1,8 @@
 <h1>Picture browser is here</h1>
+{{#if image}}
+    {{#each image}}
+        <a href="/image/{{this.dataValues.id}}"><img src="{{this.dataValues.imageURL}}" width="120" height="90"></a>
+    {{/each}}
+{{else}}
+    <p>There are currently no Images.</p>
+{{/if}}

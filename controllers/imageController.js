@@ -11,28 +11,46 @@ const express = require('express');
 const db = require('../models/index');
 const Router = require('express-promise-router');
 const imageRouter = new Router();
+const imageCache = require('../utils/cache');
 
 imageRouter.get('/all', async (req, res, next) => {
-    const images = await db.Image.findAll();
-    res.render('imageBrowser', {image: images, user:req.user});
-    //res.status(200).send(images);
+    const cachedValue = imageCache.get(req, res, next);
+    if(cachedValue){
+        images = cachedValue;
+    } else {
+        images = await db.Image.findAll();
+        res.locals.data = images;
+        imageCache.set(req, res, next)
+    }
+    //console.log('images = ' + images)
+    res.render('imageBrowser', {image: images, user:req.user}); 
 });
 
-imageRouter.get('/:id', async (req, res, next) => {
-    //find image by ID along with all captions
-    const targetIndex = req.params.id;
-    //validate targetIndex
-    const target = await db.Image.findAll({
-        where: {
-            id: targetIndex
-        }
-    });
-    const caps = await db.Caption.findAll({
-        where: {
-            imageID: targetIndex
-        }
-    })
+imageRouter.get('/:id', async (req, res, next) => {  
+    const cachedValue = imageCache.get(req, res, next);
+    let target;
+    let caps;
     
+    if(cachedValue){
+        ({target, caps} = cachedValue);
+    } else {
+        //find image by ID along with all captions
+        const targetIndex = req.params.id;
+        console.log(targetIndex);
+        //validate targetIndex
+        target = await db.Image.findAll({
+            where: {
+                id: targetIndex
+            }
+        });
+        caps = await db.Caption.findAll({
+            where: {
+                imageID: targetIndex
+            }
+        })
+        res.locals.data = {target, caps};
+        imageCache.set(req, res, next)
+    }
     res.render('imageDetail', {image: target[0].dataValues, caption: caps, user:req.user});
 });
 

@@ -17,15 +17,13 @@ const passport = require('passport');
 
 authRouter.route('/login')
     .get((req, res, next) => {
-        res.redirect('back');
     })
     .post(passport.authenticate('local', { 
-        successRedirect: '#', 
+        successRedirect: 'back', 
         failureRedirect: '/auth/login' 
     }));
 
 authRouter.post('/logout', (req, res, next) => {
-    console.log(req.get('Referrer'))
     req.logout(function(err) {
       if (err) { return next(err); }
       res.redirect('back');

@@ -8,23 +8,40 @@
     <p>No captions for this image yet! Submit one below!</p>
 {{/if}}
 
-<div id="inputFieldArea">
-        <form action="/image/caption/new" method="POST">
-            <label for="newCap">Your Caption:</label>
-            <input name="newCap" id="newCap" type = "text" required>
+{{#if user}}
+    <div id="inputFieldArea">
+            <form action="/image/caption/new" method="POST">
+                <label for="newCap">Your Caption:</label>
+                <input name="newCap" id="newCap" type = "text" required>
 
-            <!--hidden values: -->
-            <input name="userID" id="userID" type = "text" value="{{user.id}}" hidden>
-            <input name="imageID" id="imageID" type = "text" value="{{image.id}}" hidden>
+                <!--hidden values: -->
+                <input name="userID" id="userID" type = "text" value="{{user.id}}" hidden>
+                <input name="imageID" id="imageID" type = "text" value="{{image.id}}" hidden>
 
-            <br>
-            <INPUT type="submit" value="Submit"> <INPUT type="reset">
-        </form>
-</div>
+                <br>
+                <INPUT type="submit" value="Submit"> <INPUT type="reset">
+            </form>
+    </div>
+    <p>Logged in as {{user.email}}</p>
+    <br>
+    <div id="logout">
+            <form action="/auth/logout" method="POST">
+                <INPUT type="submit" value="Logout">
+            </form>
+    </div>
+{{else}}
+<p>Guests accounts can browse freely. <br> Registered users can submit captions.</p>
+    <form action="/auth/login" method="POST">
+    <label for="userEmail">Email:</label>
+    <input name="username" id="userEmail" type = "text" required><br>
+    
+    <label for="passWord">Password</label>
+    <input name="password" id="passWord" type = "password" required><br>
+    <INPUT type="submit" value="Log In"> <INPUT type="reset">
+</form>
 <br>
-<a href="/image/all">Back to image browser.</a><br>
-<div id="logout">
-        <form action="/auth/logout" method="POST">
-            <INPUT type="submit" value="Logout">
-        </form>
-</div>
+<form action="/auth/register" method="GET">
+    <input id="register" type="submit" value="Register">
+</form>
+{{/if}}
+<a href="/image/all">Back to image index.</a><br>

@@ -13,6 +13,7 @@ const morgan = require('morgan');
 const { engine } = require('express-handlebars');
 const dotenv = require('dotenv').config();
 const path = require('path');
+const { makeSaltedHash, comparePasswords } = require('./utils/utils');
 
 //controllers
 const imageRouter = require('./controllers/imageController');
@@ -29,9 +30,6 @@ app.use('/public', express.static(path.join(__dirname, "public")));
 app.engine('handlebars', engine());
 app.set('views', './views');
 app.set('view engine', 'handlebars');
-
-//middleware Routers
-
 
 // Set localHost port to listen at
 const PORT = process.env.PORT || 3000;
@@ -91,7 +89,7 @@ passport.use(
       if (!user) {
           console.log('Incorrect username.');
           return done(null, false, { message: 'Incorrect username.' });
-      } else if (password != user.password) {
+      } else if (!comparePasswords(password, user.password)) {
           console.log('Incorrect password');
           return done(null, false, { message: 'Incorrect password.' });
       } else {
@@ -102,16 +100,19 @@ passport.use(
   ); 
     
 app.get('/', (req, res, next) => {
-  //if user is not logged in:
-  res.redirect('/auth/login');
-  //else
-  //res.render('mainInterface');
+  res.redirect('/image/all');
 });
 
+app.use('/image/caption', ensureAuthenticated);
 app.use('/image', imageRouter);
 app.use('/auth', authRouter);
 
 // Add your code to start the server listening at PORT below:   
 app.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`);
-  });
+});
+
+function ensureAuthenticated(req, res, next) {
+  if(req.isAuthenticated()){ return next() };
+  res.redirect('/auth/login');
+}

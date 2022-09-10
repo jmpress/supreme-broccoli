@@ -18,6 +18,7 @@ This app was built to carry out the following behaviors:<br>
 + Create an endpoint for retrieving a single Image and related Captions by the Image ID.
 + Create an endpoint for adding a new Caption to an Image.
 + Configure localized Caching with `node-cache`
++ Write openAPI2.0 specification documentation
 
 ## Stretch goals
 + Create an endpoint for uploading new Images.

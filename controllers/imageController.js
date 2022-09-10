@@ -48,6 +48,8 @@ imageRouter.post('/caption/new', async (req, res, next) => {
     res.redirect(`/image/${imageID}`)
 });
 
+
+/* further work
 imageRouter.put('/caption/rate/:id', (req, res, next) => {
     //I need to reference both the caption ID and the new rating to add; what's the best way to pass this data in? probably ?id=x&?rating=y
     
@@ -56,7 +58,7 @@ imageRouter.put('/caption/rate/:id', (req, res, next) => {
     res.status(200).send();
 });
 
-/* further work
+
 imageRouter.post('/new', (req, res, next) => {
     //route for adding a brand new image
 });

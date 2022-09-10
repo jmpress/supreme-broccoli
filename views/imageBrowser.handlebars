@@ -8,8 +8,25 @@
 {{/if}}
 
 <br>
-<div id="logout">
+{{#if user}}
+    <p>Logged in as {{user.email}}</p>
+    <div id="logout">
         <form action="/auth/logout" method="POST">
             <INPUT type="submit" value="Logout">
         </form>
-</div>
+    </div>
+{{else}}
+    <p>Guests accounts can browse freely. <br> Registered users can submit captions.</p>
+    <form action="/auth/login" method="POST">
+    <label for="userEmail">Email:</label>
+    <input name="username" id="userEmail" type = "text" required><br>
+    
+    <label for="passWord">Password</label>
+    <input name="password" id="passWord" type = "password" required><br>
+    <INPUT type="submit" value="Log In"> <INPUT type="reset">
+</form>
+<br>
+<form action="/auth/register" method="GET">
+    <input id="register" type="submit" value="Register">
+</form>
+{{/if}}

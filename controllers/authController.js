@@ -17,17 +17,18 @@ const passport = require('passport');
 
 authRouter.route('/login')
     .get((req, res, next) => {
-        res.render('login');
+        res.redirect('back');
     })
     .post(passport.authenticate('local', { 
-        successRedirect: '/image/all', 
+        successRedirect: '#', 
         failureRedirect: '/auth/login' 
     }));
 
 authRouter.post('/logout', (req, res, next) => {
+    console.log(req.get('Referrer'))
     req.logout(function(err) {
       if (err) { return next(err); }
-      res.redirect('/auth/login');
+      res.redirect('back');
     });
   });
 
@@ -40,22 +41,25 @@ authRouter.route('/register')
     //check passA and passB are equal 
     if(userPassA !== userPassB){res.redirect('/auth/register');}
     //Salt and hash the pass
+    const saltedPass = await makeSaltedHash(userPassA);
     //save new user to database.
     const newUser = {
         firstName, 
         lastName,
         email: userEmail,
         token: '',
-        password: userPassA
+        password: saltedPass
     }
     const regUser = await db.User.create(newUser);
     console.log("auto-generated ID:", regUser.id);
     //redirect to auth/login
-    res.redirect('/auth/login');
+    res.redirect('/image/all');
 });
 
+/*
 authRouter.get('/profile', (res, req, next) => {
     res.render('profile', {user: req.user});
 })
+*/
 
 module.exports = authRouter;

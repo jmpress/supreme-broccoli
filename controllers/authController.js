@@ -16,8 +16,6 @@ const { makeSaltedHash, comparePasswords } = require('../utils/utils');
 const passport = require('passport');
 
 authRouter.route('/login')
-    .get((req, res, next) => {
-    })
     .post(passport.authenticate('local', { 
         successRedirect: 'back', 
         failureRedirect: '/auth/login' 

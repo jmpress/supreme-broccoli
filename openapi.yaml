@@ -1,0 +1,164 @@
+openapi: 3.0.1
+info:
+  title: supreme-broccoli
+  version: '1.0'
+  description: A photo caption content application.
+paths:
+  /auth/login:
+    summary: Handles Passportjs user authentication.
+    post:
+      summary: Authenticates User using passport-local, returns to same page.
+      description: ''
+      operationId: ''
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - Auth
+  /auth/logout:
+    summary: Logs the current user out.
+    post:
+      summary: >-
+        Logs out current User via passportjs req.logout() function, returns to
+        same page.
+      description: ''
+      operationId: ''
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - Auth
+  /auth/register:
+    summary: Registers a new user into the database.
+    get:
+      summary: Navigates to form for registering a new User.
+      description: ''
+      operationId: ''
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - Auth
+    post:
+      summary: 'Registers a new User with given user input. '
+      description: >-
+        Password is salted and hashed, new User id is logged to the console,
+        navigates to /image/all.
+      operationId: ''
+      requestBody:
+        description: A new User object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - Auth
+  /image/all:
+    summary: Display the index of all images
+    get:
+      summary: 'Retrieves all images and renders them on Image index page. '
+      description: >-
+        Images are retrieved from cache if exists, otherwise calls database for
+        Images then saves to cache and renders to page.
+      operationId: ''
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - Image
+  /image/{id}:
+    summary: >-
+      Displays a single image with id of {id} along with all related captions
+      for that image.
+    get:
+      summary: Displays single image with {id}, and all related captions.
+      description: >-
+        Data is retrieved cache if exists, otherwise calls database then saves
+        to cache and renders to page.
+      operationId: ''
+      parameters:
+      - name: id
+        in: path
+        description: 'The id of the image.'
+        required: true
+        schema: 
+          type: integer
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - Image
+  /caption/new:
+    summary: >-
+      Adds a new user-submitted caption to the database, then redirects back to
+      /image/{id}
+    post:
+      summary: >-
+        Creates a new caption (from User input) associated with the currently
+        displayed Image id and saves to database.
+      description: ''
+      operationId: ''
+      requestBody:
+        description: A new Caption object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Caption'
+      responses:
+        default:
+          description: Default error sample response
+      tags:
+        - Caption
+        
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        token:
+          type: string
+        password:
+          type: string
+      xml:
+        name: User
+    Image:
+      type: object
+      properties:
+        id:
+          type: integer
+        fileName:
+          type: string
+        imageURL:
+          type: string
+        rating:
+          type: integer
+        uploaderID:
+          type: integer
+      xml:
+        name: Image
+    Caption:
+      type: object
+      properties:
+        id:
+          type: integer
+        captionContent:
+          type: string
+        imageID:
+          type: integer
+        captionerID:
+          type: integer
+        rating:
+          type: integer
+      xml:
+        name: User

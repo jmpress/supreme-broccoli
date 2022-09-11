@@ -63,6 +63,9 @@ imageRouter.post('/caption/new', async (req, res, next) => {
         rating: 0
     }
     const newCaption = await db.Caption.create(userCaption);
+    req.url = `/${imageID}`;
+    console.log(req.url);
+    imageCache.clear(req, res, next);
     res.redirect(`/image/${imageID}`)
 });
 

@@ -3,6 +3,7 @@ const cache = new NodeCache({stdTTL: 300});
 
 function getCacheKey(req) {
   const cacheKey = req.url;
+  console.log(cacheKey);
   return cacheKey
 }
 
@@ -22,4 +23,9 @@ function get(req, res, next){
     }
 }
 
-module.exports = { get, set }
+function clear(req, res, next){
+  const cacheKey = getCacheKey(req);
+  cache.set(cacheKey, null);
+}
+
+module.exports = { set, get, clear }

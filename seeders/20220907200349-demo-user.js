@@ -7,7 +7,7 @@ module.exports = {
       lastName: 'Doe',
       email: 'example@example.com',
       token: '',
-      password: '',
+      password: '$2b$10$Aswz1dKM6X49RR/ix6AzYeMAEWABnUFKlSvCsZrUG6z3e3HzRpZZK',
       createdAt: new Date(),
       updatedAt: new Date()
     }]);

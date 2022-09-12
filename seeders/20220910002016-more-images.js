@@ -4,7 +4,7 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     return queryInterface.bulkInsert('Images', [{
       fileName: '1x01-Get-Away-From-my-Mom-home-movies-10527477-720-480.jpg',
-      imageURL: '../img/content/1x01-Get-Away-From-my-Mom-home-movies-10527477-720-480.jpg',
+      imageURL: '../public/img/content/1x01-Get-Away-From-my-Mom-home-movies-10527477-720-480.jpg',
       rating: 0,
       uploaderID: 1,
       createdAt: new Date(),

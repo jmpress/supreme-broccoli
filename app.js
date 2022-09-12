@@ -54,6 +54,7 @@ app.use(session({
     saveUninitialized: false,
     cookie: { maxAge: 1000*60*60, secure: false, sameSite: 'none' },
     secure: true,  //when in production, make it true.
+    rejectUnauthorized: false,
     store
   })
 )

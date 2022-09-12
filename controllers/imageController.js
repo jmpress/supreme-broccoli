@@ -12,6 +12,7 @@ const db = require('../models/index');
 const Router = require('express-promise-router');
 const imageRouter = new Router();
 const imageCache = require('../utils/cache');
+const { sanitizeInput } = require('../utils/utils');
 
 imageRouter.get('/all', async (req, res, next) => {
     const cachedValue = imageCache.get(req, res, next);
@@ -54,7 +55,7 @@ imageRouter.get('/:id', async (req, res, next) => {
     res.render('imageDetail', {image: target[0].dataValues, caption: caps, user:req.user});
 });
 
-imageRouter.post('/caption/new', async (req, res, next) => {
+imageRouter.post('/caption/new', validateCaption, async (req, res, next) => {
     const { newCap, userID, imageID } = req.body;
     const userCaption = {
         captionContent: newCap,
@@ -93,5 +94,12 @@ imageRouter.delete('/caption/delete', (req, res, next) => {
 });
 
 */
+
+function validateCaption(req, res, next){
+    const questionableCaption = req.body.newCap;
+    const cleanCap = sanitizeInput(questionableCaption, 255);
+    req.body.newCap = cleanCap;
+    next();
+}
 
 module.exports = imageRouter;

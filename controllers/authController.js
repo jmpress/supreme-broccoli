@@ -12,7 +12,7 @@ const express = require('express');
 const db = require('../models/index');
 const Router = require('express-promise-router');
 const authRouter = new Router();
-const { makeSaltedHash, comparePasswords } = require('../utils/utils');
+const { makeSaltedHash, comparePasswords, sanitizeInput } = require('../utils/utils');
 const passport = require('passport');
 
 authRouter.route('/login')
@@ -32,7 +32,7 @@ authRouter.route('/register')
     .get((req, res, next) => {
         res.render('newUser');
     })
-    .post(async (req, res, next) => {
+    .post(validateUser, async (req, res, next) => {
     const { firstName, lastName, userEmail, userPassA, userPassB } = req.body;
     //check passA and passB are equal 
     if(userPassA !== userPassB){res.redirect('/auth/register');}
@@ -57,5 +57,23 @@ authRouter.get('/profile', (res, req, next) => {
     res.render('profile', {user: req.user});
 })
 */
+
+function validateUser(req, res, next){
+    let { firstName, lastName, userEmail, userPassA, userPassB } = req.body;
+    //check passA and passB are equal 
+    if(userPassA !== userPassB){res.redirect('/auth/register');}
+    firstName = sanitizeInput(firstName, 255);
+    lastName = sanitizeInput(lastName, 255);
+    userEmail = sanitizeInput(userEmail, 255);
+    const validUser = {
+        firstName,
+        lastName,
+        userEmail,
+        userPassA,
+        userPassB,
+    };
+    req.body = validUser;
+    next();
+}
 
 module.exports = authRouter;

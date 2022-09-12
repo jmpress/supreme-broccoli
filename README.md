@@ -3,10 +3,14 @@
 #### By Jeffrey Press
 
 ## Description
-This app was built to carry out the following behaviors:<br>
-&emsp;**Behavior:** description<br>
-&emsp;**Input:** description<br>
-&emsp;**Output:** description<br>
+This app was built to carry out the following:
++ Anyone may browse the site without registering.
++ Main page displays thumbnails of all Images in the database as clickable links.
++ Each Image links to a detail page with the full-size Image and a table of user-submitted Captions for that Image.
++ Only registered Users may submit Captions on Images.
++ Register new Users to database and allow future log ins.
++ Logging in or out does not navigate away from currently viewed page.
+
 
 ## Specs
 + Using Sequelize, create models to represent the necessary objects involved.
@@ -20,10 +24,11 @@ This app was built to carry out the following behaviors:<br>
 + Configure localized Caching with `node-cache`
 + Write openAPI2.0 specification documentation
 
-## Stretch goals
+## Future work
 + Create an endpoint for uploading new Images.
-+ Create a method for adding a new rating to a Caption.
-+ Create a front-end for the app.
++ Create a method for rating Captions.
++ Use an email validation API to send verfication email for User registration.
+
 
 ## Setup/Installation Requirements
 + Fork and clone this repository locally.
@@ -34,10 +39,10 @@ This app was built to carry out the following behaviors:<br>
 
 OR
 
-+ This app will be deployed on Heroku when it is complete: <https://supreme-broccoli.herokuapp.com>.
++ This app has been deployed on Heroku: <https://supreme-broccoli.herokuapp.com>.
 
 ## Known Bugs
-+ So many right now.
++ Email addresses with problematic characters such as < > { } " etc will be altered. If you register using an email address, which then does not allow you to log in, please try again with a different email address.
 
 ## Support and contact details
 Please contact j.michael.press@gmail.com with questions, comments, or concerns. You are also welcome to submit a pull request.

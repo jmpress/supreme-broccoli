@@ -2,6 +2,11 @@ body {
     background-color:#18191A;
     color:#BF8A56;
     
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
 }
 
 a {
@@ -31,10 +36,6 @@ th {
     background-color: #48494A;
     color: #ffffff;
     text-align: left;
-}
-
-.styled-table tr {
-    cursor: pointer;
 }
 
 .row-highlight:hover {

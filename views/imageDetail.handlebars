@@ -1,9 +1,19 @@
-<h1> This page shows a single pic with all comments</h1>
-<p><img src="{{image.imageURL}}"></p> 
+<h1> {{image.fileName}}</h1>
+
+<img src="{{image.imageURL}}"> 
 {{#if caption}}
-    {{#each caption}}
-        <p>{{this.dataValues.captionContent}}</p>
-    {{/each}}
+    <table id="captions" class = "styled-table">
+        <!--
+        <thead>
+            <th>User-submitted Captions</th>
+        </thead>
+        -->
+        <tbody>
+        {{#each caption}}
+            <tr><td>{{this.dataValues.captionContent}}</td></tr>
+        {{/each}}
+        </tbody>
+    </table>
 {{else}}
     <p>No captions for this image yet! Submit one below!</p>
 {{/if}}
@@ -12,23 +22,22 @@
     <div id="inputFieldArea">
             <form action="/image/caption/new" method="POST">
                 <label for="newCap">Your Caption:</label>
-                <input name="newCap" id="newCap" type = "text" required>
-
+                <input name="newCap" id="newCap" type = "text" required/>
+                
+                <INPUT type="submit" value="Submit"> <INPUT type="reset"/>
                 <!--hidden values: -->
                 <input name="userID" id="userID" type = "text" value="{{user.id}}" hidden>
                 <input name="imageID" id="imageID" type = "text" value="{{image.id}}" hidden>
-
-                <br>
-                <INPUT type="submit" value="Submit"> <INPUT type="reset">
+                <br/>
             </form>
     </div>
-    <p>Logged in as {{user.email}}</p>
-    <br>
     <div id="logout">
-            <form action="/auth/logout" method="POST">
-                <INPUT type="submit" value="Logout">
-            </form>
+        <form action="/auth/logout" method="POST">
+            Logged in as {{user.email}}
+            <INPUT type="submit" value="Logout">
+        </form>
     </div>
+
 {{else}}
 <p>Guests accounts can browse freely. <br> Registered users can submit captions.</p>
     <form action="/auth/login" method="POST">

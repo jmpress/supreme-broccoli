@@ -32,8 +32,9 @@ This app was built to carry out the following:
 
 ## Setup/Installation Requirements
 + Fork and clone this repository locally.
-+ Install Node.
++ Install Node and PostgreSQL locally
 + Navigate to folder and run `npm install` in the console.
++ run `npx sequelize-cli db:migrate` to set up the tables, then `npx sequelize-cli db:seed:all` to seed with some dummy data.
 + run `npm start` in the console.
 + navigate to localhost:3000 to begin using the program.
 

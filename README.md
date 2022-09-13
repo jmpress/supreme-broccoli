@@ -43,6 +43,7 @@ OR
 
 ## Known Bugs
 + Email addresses with problematic characters such as < > { } " etc will be altered. If you register using an email address, which then does not allow you to log in, please try again with a different email address.
++ Does not work in Chrome or Chromium-based browsers due to (I think) the way Chrome handles referrer policy headers and its interaction with my use of res.redirect('back') in site navigation. I've had good results with Firefox and Safari. This issue should be addressed in the next sprint.
 
 ## Support and contact details
 Please contact j.michael.press@gmail.com with questions, comments, or concerns. You are also welcome to submit a pull request.

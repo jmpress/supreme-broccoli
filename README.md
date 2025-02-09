@@ -39,10 +39,6 @@ This app was built to carry out the following:
 + run `npm start` in the console.
 + navigate to localhost:3000 to begin using the program.
 
-OR
-
-+ This app has been deployed on Heroku: <https://supreme-broccoli.herokuapp.com>.
-
 ## Known Bugs
 + Email addresses with problematic characters such as < > { } " etc will be altered. If you register using an email address with uncommon non-alphanumeric characters and are subsequently unable to log in, please try again with a different email address.
 + Does not work in Chrome or Chromium-based browsers due to the way Chrome handles referrer policy headers and its interaction with my use of res.redirect('back') in site navigation. I've had good results with Firefox and Safari. This issue should be addressed in the next sprint.
